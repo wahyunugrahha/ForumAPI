@@ -255,6 +255,7 @@ describe("CommentRepository Postgres", () => {
           username: "test",
           date: new Date("2024-10-26T00:00:00.000Z"),
           is_deleted: false,
+          likecount: 0,
         },
         {
           id: "comment-125",
@@ -262,6 +263,7 @@ describe("CommentRepository Postgres", () => {
           username: "test",
           date: new Date("2024-10-27T00:00:00.000Z"),
           is_deleted: false,
+          likecount: 0, 
         },
       ]);
     });

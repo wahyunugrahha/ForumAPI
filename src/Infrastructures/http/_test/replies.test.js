@@ -192,21 +192,30 @@ describe("/replies endpoints", () => {
   describe("when DELETE /threads/{thread_id}/comments/{comment_id}/replies/{reply_id}", () => {
     it("should response 403 when non owner try to delete", async () => {
       const server = await createServer(container);
-      const { token } = await ServerTestHelper.getCredential(server);
+      const { token, user_id } = await ServerTestHelper.getCredential(server); // Deleting user (user-123 default)
+
+      // Setup Owner (user-124 default) and Thread (thread123 default) to satisfy FK constraints
+      const commentOwnerId = "user-124";
+      const threadId = "thread123";
+      await UsersTableTestHelper.addUser({ id: commentOwnerId });
+      await ThreadsTableTestHelper.addThread({
+        id: threadId,
+        owner: commentOwnerId,
+      });
 
       await CommentsTableTestHelper.addComment({
         id: "comment-125",
-        owner: "user-124",
-        thread_id: "thread123",
+        owner: commentOwnerId,
+        thread_id: threadId,
         content: "ini adalah test",
       });
 
       await RepliesTableTestHelper.addReply({
         id: "reply-126",
-        owner: "user-124",
+        owner: commentOwnerId,
         comment_id: "comment-125",
         content: "ini adalah test",
-        thread_id: "thread123",
+        thread_id: threadId,
       });
 
       const response = await server.inject({
@@ -246,10 +255,18 @@ describe("/replies endpoints", () => {
       const server = await createServer(container);
       const { token, user_id } = await ServerTestHelper.getCredential(server);
 
+      const threadId = "thread123";
+
+      await ThreadsTableTestHelper.addThread({
+        id: threadId,
+        owner: user_id,
+        title: "test delete reply thread",
+      });
+
       await CommentsTableTestHelper.addComment({
         id: "comment-126",
         owner: user_id,
-        thread_id: "thread123",
+        thread_id: threadId,
         content: "ini adalah test",
       });
 
@@ -258,7 +275,7 @@ describe("/replies endpoints", () => {
         owner: user_id,
         comment_id: "comment-126",
         content: "ini adalah test",
-        thread_id: "thread123",
+        thread_id: threadId,
       });
 
       const response = await server.inject({

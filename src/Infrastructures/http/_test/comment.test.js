@@ -345,6 +345,8 @@ describe("/comments endpoints", () => {
 
     it("should respond 200 and delete comment like if user has liked before (unlike)", async () => {
       // Arrange
+      await CommentLikesTableTestHelper.cleanTable();
+
       await CommentLikesTableTestHelper.addCommentLike({
         commentId,
         owner: user1Cred.user_id,
