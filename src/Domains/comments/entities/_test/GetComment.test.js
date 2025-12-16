@@ -38,7 +38,7 @@ describe("a GetComment entity", () => {
       date: new Date("2024-10-26T00:00:00Z"),
       content: "123",
       is_deleted: false,
-      likeCount: 5,
+      likeCount 5,
     };
 
     // Action
