@@ -5,7 +5,9 @@ describe("a GetComment entity", () => {
     const payload = {
       id: "comment-123",
       username: "testcomment",
-      date: "123",
+      date: new Date("2024-10-26T00:00:00Z"),
+      content: "123",
+      is_deleted: false,
     };
 
     expect(() => new GetComment(payload)).toThrowError(
@@ -20,6 +22,7 @@ describe("a GetComment entity", () => {
       date: 2021,
       content: "123",
       is_deleted: "false",
+      likeCount: "satu",
     };
 
     expect(() => new GetComment(payload)).toThrowError(
@@ -35,6 +38,7 @@ describe("a GetComment entity", () => {
       date: new Date("2024-10-26T00:00:00Z"),
       content: "123",
       is_deleted: false,
+      likeCount: 5,
     };
 
     // Action
@@ -46,5 +50,6 @@ describe("a GetComment entity", () => {
     expect(getComment.date).toEqual(payload.date);
     expect(getComment.content).toEqual(payload.content);
     expect(getComment.is_deleted).toEqual(payload.is_deleted);
+    expect(getComment.likeCount).toEqual(payload.likeCount);
   });
 });

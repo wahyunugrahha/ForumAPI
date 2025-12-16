@@ -38,6 +38,7 @@ describe("GetDetailThreadUseCase", () => {
             username: "testuser1",
             date: new Date("2024-10-26T00:00:00Z"),
             is_deleted: true,
+            likecount: 0,
           },
           {
             id: "comment-125",
@@ -45,6 +46,7 @@ describe("GetDetailThreadUseCase", () => {
             username: "testuser2",
             date: new Date("2024-10-26T00:00:00Z"),
             is_deleted: false,
+            likecount: 0,
           },
         ];
       });
@@ -92,6 +94,7 @@ describe("GetDetailThreadUseCase", () => {
             username: "testuser1",
             date: new Date("2024-10-26T00:00:00Z"),
             content: "**komentar telah dihapus**",
+            likeCount: 0,
             replies: [],
           },
           {
@@ -99,6 +102,7 @@ describe("GetDetailThreadUseCase", () => {
             username: "testuser2",
             date: new Date("2024-10-26T00:00:00Z"),
             content: "testkomen",
+            likeCount: 0,
             replies: [
               {
                 id: "reply-123",
