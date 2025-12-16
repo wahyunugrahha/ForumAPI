@@ -18,6 +18,17 @@ class CommentRepository {
   async getThreadComments(id) {
     throw new Error("COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
+  async toggleCommentLike(commentId, owner) {
+    throw new Error("COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED");
+  }
+
+  async checkCommentLike(commentId, owner) {
+    throw new Error("COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED");
+  }
+
+  async getCommentLikesCount(commentId) {
+    throw new Error("COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED");
+  }
 }
 
 module.exports = CommentRepository;

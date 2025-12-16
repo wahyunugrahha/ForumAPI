@@ -7,10 +7,18 @@ class GetComment {
     this.date = payload.date;
     this.content = payload.content;
     this.is_deleted = payload.is_deleted;
+    this.likeCount = payload.likeCount;
   }
 
-  _verifyPayload({ id, username, date, content, is_deleted }) {
-    if (!id || !username || !date || !content || is_deleted === undefined) {
+  _verifyPayload({ id, username, date, content, is_deleted, likeCount }) {
+    if (
+      !id ||
+      !username ||
+      !date ||
+      !content ||
+      is_deleted === undefined ||
+      likeCount === undefined
+    ) {
       throw new Error("GET_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY");
     }
 
@@ -19,7 +27,8 @@ class GetComment {
       typeof username !== "string" ||
       !(date instanceof Date) ||
       typeof content !== "string" ||
-      typeof is_deleted !== "boolean"
+      typeof is_deleted !== "boolean" ||
+      typeof likeCount !== "number"
     ) {
       throw new Error("GET_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION");
     }

@@ -22,7 +22,12 @@ class GetDetailThreadUseCase {
     );
 
     const commentData = rawCommentData.map(
-      (item) => new GetComment({ ...item })
+      (item) =>
+        new GetComment({
+          ...item,
+          date: new Date(item.date),
+          likeCount: item.likecount,
+        })
     );
     const replyData = rawReplyData.map((item) => new GetReply({ ...item }));
 
@@ -45,6 +50,7 @@ class GetDetailThreadUseCase {
         content: comment.is_deleted
           ? "**komentar telah dihapus**"
           : comment.content,
+        likeCount: comment.likeCount,
         replies: commentReplies,
       };
     });
