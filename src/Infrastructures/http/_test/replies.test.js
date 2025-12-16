@@ -192,11 +192,13 @@ describe("/replies endpoints", () => {
   describe("when DELETE /threads/{thread_id}/comments/{comment_id}/replies/{reply_id}", () => {
     it("should response 403 when non owner try to delete", async () => {
       const server = await createServer(container);
-      const { token, user_id } = await ServerTestHelper.getCredential(server); // Deleting user (user-123 default)
+      const { token, user_id } = await ServerTestHelper.getCredential(server);
 
-      // Setup Owner (user-124 default) and Thread (thread123 default) to satisfy FK constraints
-      const commentOwnerId = "user-124";
-      const threadId = "thread123";
+      const commentOwnerId = "user-delete-owner-403";
+      const threadId = "thread-delete-403";
+      const commentId = "comment-delete-403";
+      const replyId = "reply-delete-403";
+
       await UsersTableTestHelper.addUser({ id: commentOwnerId });
       await ThreadsTableTestHelper.addThread({
         id: threadId,
@@ -204,23 +206,24 @@ describe("/replies endpoints", () => {
       });
 
       await CommentsTableTestHelper.addComment({
-        id: "comment-125",
+        id: commentId,
         owner: commentOwnerId,
         thread_id: threadId,
         content: "ini adalah test",
       });
 
       await RepliesTableTestHelper.addReply({
-        id: "reply-126",
+        id: replyId,
         owner: commentOwnerId,
-        comment_id: "comment-125",
+        comment_id: commentId,
         content: "ini adalah test",
         thread_id: threadId,
       });
 
       const response = await server.inject({
         method: "DELETE",
-        url: "/threads/thread123/comments/comment-125/replies/reply-126",
+        // FIX: Menggunakan ID unik di URL
+        url: `/threads/${threadId}/comments/${commentId}/replies/${replyId}`,
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -255,7 +258,10 @@ describe("/replies endpoints", () => {
       const server = await createServer(container);
       const { token, user_id } = await ServerTestHelper.getCredential(server);
 
-      const threadId = "thread123";
+      // FIX: Menggunakan ID unik untuk menghindari konflik dengan data dari tes POST sebelumnya.
+      const threadId = "thread-delete-200";
+      const commentId = "comment-delete-200";
+      const replyId = "reply-delete-200";
 
       await ThreadsTableTestHelper.addThread({
         id: threadId,
@@ -264,23 +270,23 @@ describe("/replies endpoints", () => {
       });
 
       await CommentsTableTestHelper.addComment({
-        id: "comment-126",
+        id: commentId,
         owner: user_id,
         thread_id: threadId,
         content: "ini adalah test",
       });
 
       await RepliesTableTestHelper.addReply({
-        id: "reply-127",
+        id: replyId,
         owner: user_id,
-        comment_id: "comment-126",
+        comment_id: commentId,
         content: "ini adalah test",
         thread_id: threadId,
       });
 
       const response = await server.inject({
         method: "DELETE",
-        url: "/threads/thread123/comments/comment-126/replies/reply-127",
+        url: `/threads/${threadId}/comments/${commentId}/replies/${replyId}`,
         headers: {
           authorization: `Bearer ${token}`,
         },
